@@ -1,0 +1,63 @@
+menus:
+  refreshtime: 300 #время в секундах, каждые 5 мин будут обновляться цена на товаре глобально для всех
+  categories:
+    blockseller: #ID скупщика.
+      displayName: "Строитель" #Название для отображения игроку. я не знаю куда это засунуть, пусть будет на всякий случай, для масштабирования
+      absent: #Дефолтные значения для филлеров, которые будут заполняться в меню скупщика в зависимости от того, откуда был открыто меню (NPC или команда плагина)
+        citizens:
+          - id: "glass" #filler
+            displayname: "Вы видите это только если открыли через NPC"
+            lore:
+              - "Какой то крутой текст"
+            slotID: 15
+        plugincommand:
+          - id: "glass" #filler
+            displayname: "Вы видите это только если открыли через команду плагина"
+            lore:
+              - "Какой то крутой текст"
+            slotID: 15
+      contents: #хранить contents отдельно в виде листа, что бы можно было с помощью команды продать все сразу по текущему прайсу, но по уменьшенной цене
+        - id: "stone"
+          displayname: "Продажа камня"
+          lore:
+            - "Нажмите пкм"
+            - "что бы продать камень"
+          slotID: 10
+          price1:
+            increaseIfSalesUnder: 5 #Увеличиваем цену только в том случае, если продажи ниже 5;
+            decreaseIfSalesUpwards: 10 #Уменьшаем цену только в том случае, если продажи выше 10
+            default: 20000
+            min: 10000
+            max: 30000
+            increaseGradation: 1000
+            decreaseGradation: 500
+          price2:
+            salesCountToTriggerGradation: 2; #если ниже 2х продаж -> цена вверх идет. #если выше 2х продаж - то цена падает.
+            default: 20000
+            min: 10000
+            max: 30000
+            increaseGradation: 1000
+            decreaseGradation: 500
+          actions:
+            - '[sound] ARROW_HIT'
+            - '[console] jobs levelup {player} 1'
+            - '[text] Успешно продано'
+        - id: "dirt"
+          displayname: "Продажа блока земли"
+          lore:
+            - "Нажмите пкм"
+            - "что бы продать траву"
+          slotID: 11
+          price:
+            default: 25000
+            min: 15000
+            max: 35000
+            increaseGradation: 500
+            decreaseGradation: 1000
+        - id: "glass" #filler который будет 100%, если открыть с NPC или командой
+          displayname: "Крутой сервер"
+          lore:
+            - "Какой то крутой текст"
+          slotID: 12
+    foodseller:
+    weaponSeller:

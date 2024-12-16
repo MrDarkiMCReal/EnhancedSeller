@@ -1,0 +1,6 @@
+name: EnhancedBuyer
+version: '${project.version}'
+main: org.mrdarkimc.enhancedbuyer.EnhancedBuyer
+api-version: '1.16'
+author: MrDarkiMC
+website: https://t.me/doomgxard

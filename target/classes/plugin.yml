@@ -1,0 +1,4 @@
+name: EnhancedBuyer
+version: '1.0'
+main: org.mrdarkimc.enhancedbuyer.EnhancedBuyer
+api-version: '1.16'
