@@ -1,4 +1,4 @@
-package org.mrdarkimc.enhancedbuyer.buyer.parts;
+package org.mrdarkimc.enhancedbuyer.buyer.parts.interfaces;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -9,4 +9,6 @@ public interface IMenuButton {
     public void pressShiftLeft(Player player);
     public void pressRight(Player player);
     public void pressShiftRight(Player player);
+    void updateInfo();
+    void updatePrice();
 }

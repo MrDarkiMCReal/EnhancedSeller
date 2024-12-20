@@ -1,44 +1,72 @@
 package org.mrdarkimc.enhancedbuyer.buyer;
 
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.mrdarkimc.SatanicLib.Utils;
 import org.mrdarkimc.SatanicLib.objectManager.interfaces.Reloadable;
-import org.mrdarkimc.enhancedbuyer.buyer.parts.PurchaseItem;
+import org.mrdarkimc.enhancedbuyer.buyer.parts.interfaces.IMenuButton;
 import org.mrdarkimc.enhancedbuyer.objectmanager.ObjectManager;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class Buyer implements InventoryHolder, Reloadable {
     private String displayName;
 
-    public String getConfigID() {
-        return configID;
-    }
-
     private String configID;
-    private Map<Integer, PurchaseItem> contents;
+    private Map<Integer, IMenuButton> contents;
     private Inventory inventory;
+    private Map<Integer, IMenuButton> extraContents;
 
     // Конструктор
-    public Buyer(String id, String displayName, Map<Integer, PurchaseItem> contents) {
+    public Buyer(String id, String displayName, Map<Integer, IMenuButton> contents, Map<Integer, IMenuButton> extraContents) {
         this.configID = id;
         this.displayName = Utils.translateHex(displayName);
         this.contents = contents;
+        //this.inventory = Bukkit.createInventory(this,54,displayName);
+        this.extraContents = extraContents;
+        //fillInventory();
+
     }
-    public void deserealize(){
-        ObjectManager.deserializeBuyer(configID);
+    public String getConfigID() {
+        return configID;
+    }
+    public void fillInventory(){
+        contents.forEach((k,v) -> inventory.setItem(k,v.getStack()));
+    }
+    public void fillDefaults(){
+
+    }
+    public void openByPlugin(Player player){
+        Map<Integer, IMenuButton> combinedContents = new HashMap<>(contents);
+        combinedContents.putAll(extraContents);
+        new ShopView(this,combinedContents).open(player);
+    }
+    public void updateItemInfo(){
+        contents.forEach((k,v) -> v.updateInfo());
+        extraContents.forEach((k,v) -> v.updateInfo());
+    }
+    public void updateItemPrice(){
+        contents.forEach((k,v) -> v.updatePrice());
+        extraContents.forEach((k,v) -> v.updatePrice());
+    }
+    public void openByCitizens(Player player){
+        new ShopView(this,contents).open(player);
     }
 
-    // Геттеры и Сеттеры
+    public void deserealize(){
+        ObjectManager.deserializeBuyer(configID); //todo wtf is this. текущий обьект будет удален GC
+    }
+
     public String getDisplayName() {
         return displayName;
     }
 
-public PurchaseItem getBySlot(int slot){
+public IMenuButton getBySlot(int slot){
         return contents.get(slot);
 }
-    private Map<Integer, PurchaseItem> getContents() {
+    private Map<Integer, IMenuButton> getContents() {
         return contents;
     }
 

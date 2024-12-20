@@ -23,7 +23,7 @@ public class PriceManager implements IManager {
 
     }
     public void updatePurchases(){
-
+    //map.k
     }
 
 

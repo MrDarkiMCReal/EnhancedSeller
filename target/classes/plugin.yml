@@ -2,3 +2,11 @@ name: EnhancedBuyer
 version: '1.0'
 main: org.mrdarkimc.enhancedbuyer.EnhancedBuyer
 api-version: '1.16'
+author: MrDarkiMC
+website: https://t.me/doomgxard
+softdepend:
+  - Vault
+  - PlayerPoints
+commands:
+  seller:
+    description: main command

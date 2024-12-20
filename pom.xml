@@ -71,7 +71,6 @@
           <groupId>org.mrdarkimc</groupId>
           <artifactId>SatanicLib</artifactId>
           <version>1.0</version>
-          <scope>provided</scope>
       </dependency>
   </dependencies>
 </project>

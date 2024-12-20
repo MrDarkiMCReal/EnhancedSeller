@@ -1,10 +1,15 @@
 package org.mrdarkimc.enhancedbuyer;
 
 import org.bukkit.plugin.java.JavaPlugin;
+import org.mrdarkimc.SatanicLib.Debugger;
 import org.mrdarkimc.SatanicLib.SatanicLib;
+import org.mrdarkimc.SatanicLib.Utils;
 import org.mrdarkimc.SatanicLib.configsetups.Configs;
+import org.mrdarkimc.SatanicLib.currency.PlayerPoints;
 import org.mrdarkimc.SatanicLib.currency.Vault;
 import org.mrdarkimc.SatanicLib.currency.interfaces.Currency;
+import org.mrdarkimc.enhancedbuyer.buyer.CycleManager;
+import org.mrdarkimc.enhancedbuyer.eventhandlers.MenuListener;
 import org.mrdarkimc.enhancedbuyer.objectmanager.ObjectManager;
 
 public final class EnhancedBuyer extends JavaPlugin {
@@ -12,6 +17,7 @@ public final class EnhancedBuyer extends JavaPlugin {
     public static EnhancedBuyer instance;
     public static Currency currency;
     public static ObjectManager manager;
+    public static CycleManager cycleManager;
 
     public static EnhancedBuyer getInstance() {
         return instance;
@@ -22,10 +28,27 @@ public final class EnhancedBuyer extends JavaPlugin {
         instance = this;
         SatanicLib.setupLib(this);
         config = Configs.Defaults.setupConfig();
-        currency = new Vault();
+        Utils.startUp("EnhancedSeller Premium");
+        setUpEconomy();
+        getServer().getPluginCommand("seller").setExecutor(new Command());
+        getServer().getPluginManager().registerEvents(new MenuListener(),this);
         manager = ObjectManager.initialize();
+        new Debugger();
+        cycleManager = new CycleManager();
         // Plugin startup logic
 
+    }
+    public void setUpEconomy() {
+        String currency = config.get().getString("SatanicLib.currency");
+        switch (currency) {
+            case "Vault":
+                this.currency = new Vault();
+                break;
+            case "PlayerPoints":
+                this.currency = new PlayerPoints();
+                break;
+
+        }
     }
 
     @Override
