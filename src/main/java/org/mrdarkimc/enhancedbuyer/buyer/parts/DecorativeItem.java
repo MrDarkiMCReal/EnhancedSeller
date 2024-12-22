@@ -1,5 +1,6 @@
 package org.mrdarkimc.enhancedbuyer.buyer.parts;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -7,6 +8,7 @@ import org.mrdarkimc.SatanicLib.Utils;
 import org.mrdarkimc.SatanicLib.prefixHandler.Prefix;
 import org.mrdarkimc.enhancedbuyer.buyer.parts.interfaces.IMenuButton;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -24,15 +26,20 @@ public class DecorativeItem implements IMenuButton {
         this.actions = actions;
         updateStack();
     }
-    private void updateStack(){
+
+    private void updateStack() {
         ItemMeta meta = displayItem.getItemMeta();
         meta.setDisplayName(displayName); //sets default value to store data
         meta.setLore(lore); //sets default value to store data
 
         meta.setDisplayName(Utils.translateHex(meta.getDisplayName()));
-        List<String> original = meta.getLore();
-        original.forEach(Utils::translateHex);
-        meta.setLore(original);
+            if (lore!=null) {
+                List<String> newLore = new ArrayList<>(lore);
+                newLore.replaceAll(Utils::translateHex);
+
+                meta.setLore(newLore);
+            }
+
 
         displayItem.setItemMeta(meta);
     }
@@ -41,13 +48,14 @@ public class DecorativeItem implements IMenuButton {
     public ItemStack getStack() {
         return displayItem;
     }
-    public void action(Player player){
-        if (actions ==null) {
+
+    public void action(Player player) {
+        if (actions == null) {
             return;
         }
         if (actions.isEmpty())
             return;
-        actions.forEach(text -> Prefix.handle(player,text, Map.of("{player}",player.getName())));
+        actions.forEach(text -> Prefix.handle(player, text, Map.of("{player}", player.getName())));
     }
 
     @Override

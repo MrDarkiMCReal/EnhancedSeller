@@ -18,9 +18,11 @@ public class Buyer implements InventoryHolder, Reloadable {
     private Map<Integer, IMenuButton> contents;
     private Inventory inventory;
     private Map<Integer, IMenuButton> extraContents;
+    private int shopSize;
 
     // Конструктор
-    public Buyer(String id, String displayName, Map<Integer, IMenuButton> contents, Map<Integer, IMenuButton> extraContents) {
+    public Buyer(String id, int size, String displayName, Map<Integer, IMenuButton> contents, Map<Integer, IMenuButton> extraContents) {
+        this.shopSize = size;
         this.configID = id;
         this.displayName = Utils.translateHex(displayName);
         this.contents = contents;
@@ -41,7 +43,7 @@ public class Buyer implements InventoryHolder, Reloadable {
     public void openByPlugin(Player player){
         Map<Integer, IMenuButton> combinedContents = new HashMap<>(contents);
         combinedContents.putAll(extraContents);
-        new ShopView(this,combinedContents).open(player);
+        new ShopView(this,combinedContents,shopSize).open(player);
     }
     public void updateItemInfo(){
         contents.forEach((k,v) -> v.updateInfo());
@@ -52,7 +54,7 @@ public class Buyer implements InventoryHolder, Reloadable {
         extraContents.forEach((k,v) -> v.updatePrice());
     }
     public void openByCitizens(Player player){
-        new ShopView(this,contents).open(player);
+        new ShopView(this,contents,shopSize).open(player);
     }
 
     public void deserealize(){

@@ -10,6 +10,7 @@ import org.mrdarkimc.SatanicLib.Debugger;
 import org.mrdarkimc.SatanicLib.Utils;
 import org.mrdarkimc.SatanicLib.messages.KeyedMessage;
 import org.mrdarkimc.SatanicLib.messages.Message;
+import org.mrdarkimc.SatanicLib.prefixHandler.Prefix;
 import org.mrdarkimc.enhancedbuyer.EnhancedBuyer;
 import org.mrdarkimc.enhancedbuyer.buyer.parts.interfaces.IMenuButton;
 
@@ -134,6 +135,7 @@ private void updateStack(){
         EnhancedBuyer.currency.addMoney(player, totalmoney);
         price.addSalesCount(sellAmount);
         new KeyedMessage(player,"messages.bought-success",Map.of("{amount}",String.valueOf(sellAmount),"{price}",String.valueOf(totalmoney))).send();
+        action(player);
         //EnhancedBuyer.manager.priceManager.addSale(this);
     }
 //
@@ -193,6 +195,7 @@ private void updateStack(){
                 .toList();
         if (stackList.isEmpty()){
             new KeyedMessage(player,"messages.bought-failure-all",Map.of("{amount}",String.valueOf(amount))).send();
+            return;
         }
         int totalAmount = stackList.stream().mapToInt(ItemStack::getAmount).sum();
 
@@ -215,6 +218,7 @@ private void updateStack(){
             EnhancedBuyer.currency.addMoney(player, totalmoney);
             price.addSalesCount(amount);
             new KeyedMessage(player,"messages.bought-success",Map.of("{amount}",String.valueOf(amount),"{price}",String.valueOf(totalmoney))).send();
+            action(player);
         }else {
             new KeyedMessage(player,"messages.bought-failure",Map.of("{amount}",String.valueOf(amount),"{playerAmount}",String.valueOf(totalAmount))).send();
         }
@@ -235,12 +239,20 @@ private void updateStack(){
             price.addSalesCount(totalAmount);
             int totalmoney = totalAmount * this.price.getCurrentPrice();
             new KeyedMessage(player,"messages.bought-success",Map.of("{amount}",String.valueOf(totalAmount),"{price}",String.valueOf(totalmoney))).send();
+            action(player);
         }else {
             new KeyedMessage(player,"messages.bought-failure-all", null).send();
         }
 
     }
-
+    public void action(Player player){
+        if (actions ==null) {
+            return;
+        }
+        if (actions.isEmpty())
+            return;
+        actions.forEach(text -> Prefix.handle(player,text, Map.of("{player}",player.getName())));
+    }
     @Override
     public void updateInfo() {
         updateStack();

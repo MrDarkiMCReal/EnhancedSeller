@@ -10,9 +10,7 @@ org\mrdarkimc\enhancedbuyer\buyer\parts\interfaces\IClick.class
 org\mrdarkimc\enhancedbuyer\EnhancedBuyer.class
 org\mrdarkimc\enhancedbuyer\buyer\parts\interfaces\IPrice.class
 org\mrdarkimc\enhancedbuyer\Command.class
-org\mrdarkimc\enhancedbuyer\objectmanager\PriceManager.class
 org\mrdarkimc\enhancedbuyer\autosell\Autosell.class
-org\mrdarkimc\enhancedbuyer\objectmanager\ItemManager.class
 org\mrdarkimc\enhancedbuyer\eventhandlers\MenuListener.class
 org\mrdarkimc\enhancedbuyer\objectmanager\ObjectManager.class
 org\mrdarkimc\enhancedbuyer\buyer\parts\PurchaseItem.class

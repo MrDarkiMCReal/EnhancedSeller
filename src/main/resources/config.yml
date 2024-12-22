@@ -1,51 +1,60 @@
 SatanicLib:
   debugger: true
   currency: Vault #так же можно PlayerPoints
+#https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html - sound types
 messages:
   bought-success: #можно добавить еще несколько кастомных сообщений
     enable: true
     text:
       - ' '
-      - 'Успешно продано {amount}шт за {price}'
+      - '&#853DFF   Успешно продано {amount}шт за {price}'
       - ' '
   bought-failure: #Если вызывать их через [keyedText] то плейсхолдеров не будет.
     enable: true
     text:
       - ' '
-      - 'У вас не хватает предметов. Требуется: {amount} у вас {playerAmount}'
+      - '&#853DFF   У вас не хватает предметов. Требуется: {amount} у вас {playerAmount}'
       - ' ' #пробелы обязательно
   bought-failure-all:
     enable: true
     text:
       - ' '
-      - 'У вас нет такого предмета'
+      - '&#853DFF   У вас нет такого предмета'
       - ' '
-  home:
+  back:
     enable: true
     text:
       - ' '
-      - 'Добро пожаловать домой'
+      - '&#853DFF   Вы вернулись обратно в меню скупщика'
       - ' '
 menus:
   refreshtime: 300 #время в секундах, каждые 5 мин будут обновляться цена на товаре глобально для всех
   categories:
     blockseller: #ID скупщика.
-      displayName: "Строитель" #Название для отображения игроку. я не знаю куда это засунуть, пусть будет на всякий случай, для масштабирования
+      size: 36
+      displayName: "&#853DFFСтроитель" #Название для отображения игроку. я не знаю куда это засунуть, пусть будет на всякий случай, для масштабирования
       citizensOverride: #эта графа отвечает за то, что предметы будут переписаны, если меню открыто с помощью команды. #Это декоративный предмет, он не будет продаваться, т.к у него нет цены.
-        - id: "stone" #filler
-          displayname: "Вы видите это только если открыли через Команду плагина."
+        - id: "redstone_block" #filler
+          displayname: "&#853DFF  Вернуться обратно в меню  "
           lore:
-            - "Какой то крутой текст"
-          slotID: 15
+            - "         &7Нажмите ПКМ      "
+          slotID: 27
           success_commands:
-            - '[command] home {player}' #выполняется от имени игрока
-            - '[console] say Игрок {player} кликнул на камень и телепортировался домой'
-            - '[keyedText] messages.home' #путь к сообщению
+            - '[console] dmenu open basics_menu {player}'
+            - '[keyedText] messages.back' #путь к сообщению
+        - id: "spectral_arrow" #filler
+          displayname: "&#853DFF  Следующий скупщик  "
+          lore:
+            - "      &7Нажмите ПКМ  "
+          slotID: 35
+          success_commands:
+            - '[console] seller open foodseller {player}'
+            - '[sound] ENTITY_EXPERIENCE_ORB_PICKUP'
       contents: #хранить contents отдельно в виде листа, что бы можно было с помощью команды продать все сразу по текущему прайсу, но по уменьшенной цене
         - id: "stone"
-          displayname: " "
+          displayname: " " #это дисплейнейм и название предмета. При обновлении предмета это название будет отображаться, но поскольку оно = null то ничего отображаться не будет
           lore:
-            - "                  &#8C4CA7Продажа камня"
+            - "                  &#853DFFПродажа камня"
             - "  "
             - "  &#869D94ЛКМ - 1шт &7| &#869D94ПКМ - 64шт &7| &#869D94ШИФТ+ПКМ - все  "
             - "  "
@@ -62,30 +71,263 @@ menus:
             - "               &#5EAC8E{sales} &#869D94- кол-во продаж"
           slotID: 10
           price:
-            increaseIfSalesUnder: 5 #Увеличиваем цену только в том случае, если продажи ниже 5; PS это не кол-во продаж, а кол-во проданного товара в штуках. т.е 2 стака = 128
-            decreaseIfSalesUpwards: 10 #Уменьшаем цену только в том случае, если продажи выше 10
-            default: 20000
-            min: 10000
-            max: 30000
-            increaseGradation: 1000
-            decreaseGradation: 500
+            increaseIfSalesUnder: 100 #Увеличиваем цену только в том случае, если продажи ниже 5; PS это не кол-во продаж, а кол-во проданного товара в штуках. т.е 2 стака = 128
+            decreaseIfSalesUpwards: 400 #Уменьшаем цену только в том случае, если продажи выше 10
+            default: 200 #цена за 1шт
+            min: 50
+            max: 300
+            increaseGradation: 40
+            decreaseGradation: 50
           success_commands:
-            - '[command] home {player}' #выполняется от имени игрока
-            - '[console] say Игрок {player} купил камень и телепортировался домой'
+            - '[sound] ENTITY_EXPERIENCE_ORB_PICKUP'
         - id: "dirt"
-          displayname: "Продажа блока земли"
+          displayname: " "
           lore:
-            - "Нажмите пкм"
-            - "что бы продать траву"
+            - "                  &#853DFFПродажа земли"
+            - "  "
+            - "  &#869D94ЛКМ - 1шт &7| &#869D94ПКМ - 64шт &7| &#869D94ШИФТ+ПКМ - все  "
+            - "  "
+            - "                   &#869D94Цена: &#5EAC8E${current}"
+            - "   "
+            - "    &#869D94Цена варьируется от &#5EAC8E{min} &#869D94до &#5EAC8E{max}  "
+            - " "
+            - "              &#869D94Повышается на: &#5EAC8E{increase}"
+            - "    &#869D94за каждые &#5EAC8E{increaseIfSalesUnder}&#869D94 проданных предметов"
+            - "  "
+            - "              &#869D94Снижается на: &#5EAC8E{decrease}"
+            - "    &#869D94за каждые &#5EAC8E{decreaseIfSalesUpwards} &#869D94проданных предметов"
+            - " "
+            - "               &#5EAC8E{sales} &#869D94- кол-во продаж"
           slotID: 11
           price:
-            default: 25000
-            min: 5000
-            max: 55000
-            increaseGradation: 500
-            decreaseGradation: 1000
-        - id: "glass" #filler который будет 100%, если открыть с NPC или командой
-          displayname: "Крутой сервер"
+            increaseIfSalesUnder: 100 #Увеличиваем цену только в том случае, если продажи ниже 5; PS это не кол-во продаж, а кол-во проданного товара в штуках. т.е 2 стака = 128
+            decreaseIfSalesUpwards: 400 #Уменьшаем цену только в том случае, если продажи выше 10
+            default: 200 #цена за 1шт
+            min: 50
+            max: 300
+            increaseGradation: 40
+            decreaseGradation: 50
+          success_commands:
+            - '[sound] ENTITY_EXPERIENCE_ORB_PICKUP'
+        #fillers
+        - id: "purple_stained_glass_pane" #filler
+          displayname: "&#853DFFpowered by MrDarkiMC"
+          slotID: 0
+        - id: "purple_stained_glass_pane" #filler
+          displayname: "&#853DFFpowered by MrDarkiMC"
+          slotID: 1
+        - id: "purple_stained_glass_pane" #filler
+          displayname: "&#853DFFpowered by MrDarkiMC"
+          slotID: 2
+        - id: "purple_stained_glass_pane" #filler
+          displayname: "&#853DFFpowered by MrDarkiMC"
+          slotID: 3
+        - id: "purple_stained_glass_pane" #filler
+          displayname: "&#853DFFpowered by MrDarkiMC"
+          slotID: 4
+        - id: "purple_stained_glass_pane" #filler
+          displayname: "&#853DFFpowered by MrDarkiMC"
+          slotID: 5
+        - id: "purple_stained_glass_pane" #filler
+          displayname: "&#853DFFpowered by MrDarkiMC"
+          slotID: 6
+        - id: "purple_stained_glass_pane" #filler
+          displayname: "&#853DFFpowered by MrDarkiMC"
+          slotID: 7
+        - id: "purple_stained_glass_pane" #filler
+          displayname: "&#853DFFpowered by MrDarkiMC"
+          slotID: 8
+        - id: "purple_stained_glass_pane" #filler
+          displayname: "&#853DFFpowered by MrDarkiMC"
+          slotID: 9
+        - id: "purple_stained_glass_pane" #filler
+          displayname: "&#853DFFpowered by MrDarkiMC"
+          slotID: 17
+        - id: "purple_stained_glass_pane" #filler
+          displayname: "&#853DFFpowered by MrDarkiMC"
+          slotID: 18
+        - id: "purple_stained_glass_pane" #filler
+          displayname: "&#853DFFpowered by MrDarkiMC"
+          slotID: 26
+        - id: "purple_stained_glass_pane" #filler
+          displayname: "&#853DFFpowered by MrDarkiMC"
+          slotID: 27
+        - id: "purple_stained_glass_pane" #filler
+          displayname: "&#853DFFpowered by MrDarkiMC"
+          slotID: 28
+        - id: "purple_stained_glass_pane" #filler
+          displayname: "&#853DFFpowered by MrDarkiMC"
+          slotID: 29
+        - id: "purple_stained_glass_pane" #filler
+          displayname: "&#853DFFpowered by MrDarkiMC"
+          slotID: 30
+        - id: "purple_stained_glass_pane" #filler
+          displayname: "&#853DFFpowered by MrDarkiMC"
+          slotID: 31
+        - id: "purple_stained_glass_pane" #filler
+          displayname: "&#853DFFpowered by MrDarkiMC"
+          slotID: 32
+        - id: "purple_stained_glass_pane" #filler
+          displayname: "&#853DFFpowered by MrDarkiMC"
+          slotID: 33
+        - id: "purple_stained_glass_pane" #filler
+          displayname: "&#853DFFpowered by MrDarkiMC"
+          slotID: 34
+        - id: "purple_stained_glass_pane" #filler
+          displayname: "&#853DFFpowered by MrDarkiMC"
+          slotID: 35
+    foodseller: #ID скупщика.
+      size: 36
+      displayName: "&#853DFFПовар" #Название для отображения игроку. я не знаю куда это засунуть, пусть будет на всякий случай, для масштабирования
+      citizensOverride: #эта графа отвечает за то, что предметы будут переписаны, если меню открыто с помощью команды. #Это декоративный предмет, он не будет продаваться, т.к у него нет цены.
+        - id: "redstone_block" #filler
+          displayname: "&#853DFF  Вернуться обратно в меню  "
           lore:
-            - "Какой то крутой текст"
-          slotID: 12
+            - "         &7Нажмите ПКМ      "
+          slotID: 27
+          success_commands:
+            - '[console] dmenu open basics_menu {player}'
+            - '[keyedText] messages.back' #путь к сообщению
+            - '[sound] ENTITY_EXPERIENCE_ORB_PICKUP'
+        - id: "spectral_arrow" #filler
+          displayname: "&#853DFF  Следующий скупщик  "
+          lore:
+            - "      &7Нажмите ПКМ  "
+          slotID: 35
+          success_commands:
+            - '[console] seller open foodseller {player}'
+        - id: "spectral_arrow" #filler
+          displayname: "&#853DFF  Предыдущий скупщик"
+          lore:
+            - "       &7Нажмите ПКМ  "
+          slotID: 34
+          success_commands:
+            - '[console] seller open blockseller {player}'
+            - '[sound] ENTITY_EXPERIENCE_ORB_PICKUP'
+      contents: #хранить contents отдельно в виде листа, что бы можно было с помощью команды продать все сразу по текущему прайсу, но по уменьшенной цене
+        - id: "apple"
+          displayname: " " #это дисплейнейм и название предмета. При обновлении предмета это название будет отображаться, но поскольку оно = null то ничего отображаться не будет
+          lore:
+            - "                  &#853DFFПродажа яблок"
+            - "  "
+            - "  &#869D94ЛКМ - 1шт &7| &#869D94ПКМ - 64шт &7| &#869D94ШИФТ+ПКМ - все  "
+            - "  "
+            - "                   &#869D94Цена: &#5EAC8E${current}"
+            - "   "
+            - "    &#869D94Цена варьируется от &#5EAC8E{min} &#869D94до &#5EAC8E{max}  "
+            - " "
+            - "              &#869D94Повышается на: &#5EAC8E{increase}"
+            - "    &#869D94за каждые &#5EAC8E{increaseIfSalesUnder}&#869D94 проданных предметов"
+            - "  "
+            - "              &#869D94Снижается на: &#5EAC8E{decrease}"
+            - "    &#869D94за каждые &#5EAC8E{decreaseIfSalesUpwards} &#869D94проданных предметов"
+            - " "
+            - "               &#5EAC8E{sales} &#869D94- кол-во продаж"
+          slotID: 10
+          price:
+            increaseIfSalesUnder: 100 #Увеличиваем цену только в том случае, если продажи ниже 5; PS это не кол-во продаж, а кол-во проданного товара в штуках. т.е 2 стака = 128
+            decreaseIfSalesUpwards: 400 #Уменьшаем цену только в том случае, если продажи выше 10
+            default: 200 #цена за 1шт
+            min: 50
+            max: 300
+            increaseGradation: 40
+            decreaseGradation: 50
+          success_commands:
+            - '[sound] ENTITY_EXPERIENCE_ORB_PICKUP'
+        - id: "golden_apple"
+          displayname: " "
+          lore:
+            - "             &#853DFFПродажа золотых яблок"
+            - "  "
+            - "  &#869D94ЛКМ - 1шт &7| &#869D94ПКМ - 64шт &7| &#869D94ШИФТ+ПКМ - все  "
+            - "  "
+            - "                   &#869D94Цена: &#5EAC8E${current}"
+            - "   "
+            - "    &#869D94Цена варьируется от &#5EAC8E{min} &#869D94до &#5EAC8E{max}  "
+            - " "
+            - "              &#869D94Повышается на: &#5EAC8E{increase}"
+            - "    &#869D94за каждые &#5EAC8E{increaseIfSalesUnder}&#869D94 проданных предметов"
+            - "  "
+            - "              &#869D94Снижается на: &#5EAC8E{decrease}"
+            - "    &#869D94за каждые &#5EAC8E{decreaseIfSalesUpwards} &#869D94проданных предметов"
+            - " "
+            - "               &#5EAC8E{sales} &#869D94- кол-во продаж"
+          slotID: 11
+          price:
+            increaseIfSalesUnder: 100 #Увеличиваем цену только в том случае, если продажи ниже 5; PS это не кол-во продаж, а кол-во проданного товара в штуках. т.е 2 стака = 128
+            decreaseIfSalesUpwards: 400 #Уменьшаем цену только в том случае, если продажи выше 10
+            default: 200 #цена за 1шт
+            min: 50
+            max: 300
+            increaseGradation: 40
+            decreaseGradation: 50
+          success_commands:
+            - '[sound] ENTITY_EXPERIENCE_ORB_PICKUP'
+        #fillers
+        - id: "purple_stained_glass_pane" #filler
+          displayname: "&#853DFFpowered by MrDarkiMC"
+          slotID: 0
+        - id: "purple_stained_glass_pane" #filler
+          displayname: "&#853DFFpowered by MrDarkiMC"
+          slotID: 1
+        - id: "purple_stained_glass_pane" #filler
+          displayname: "&#853DFFpowered by MrDarkiMC"
+          slotID: 2
+        - id: "purple_stained_glass_pane" #filler
+          displayname: "&#853DFFpowered by MrDarkiMC"
+          slotID: 3
+        - id: "purple_stained_glass_pane" #filler
+          displayname: "&#853DFFpowered by MrDarkiMC"
+          slotID: 4
+        - id: "purple_stained_glass_pane" #filler
+          displayname: "&#853DFFpowered by MrDarkiMC"
+          slotID: 5
+        - id: "purple_stained_glass_pane" #filler
+          displayname: "&#853DFFpowered by MrDarkiMC"
+          slotID: 6
+        - id: "purple_stained_glass_pane" #filler
+          displayname: "&#853DFFpowered by MrDarkiMC"
+          slotID: 7
+        - id: "purple_stained_glass_pane" #filler
+          displayname: "&#853DFFpowered by MrDarkiMC"
+          slotID: 8
+        - id: "purple_stained_glass_pane" #filler
+          displayname: "&#853DFFpowered by MrDarkiMC"
+          slotID: 9
+        - id: "purple_stained_glass_pane" #filler
+          displayname: "&#853DFFpowered by MrDarkiMC"
+          slotID: 17
+        - id: "purple_stained_glass_pane" #filler
+          displayname: "&#853DFFpowered by MrDarkiMC"
+          slotID: 18
+        - id: "purple_stained_glass_pane" #filler
+          displayname: "&#853DFFpowered by MrDarkiMC"
+          slotID: 26
+        - id: "purple_stained_glass_pane" #filler
+          displayname: "&#853DFFpowered by MrDarkiMC"
+          slotID: 27
+        - id: "purple_stained_glass_pane" #filler
+          displayname: "&#853DFFpowered by MrDarkiMC"
+          slotID: 28
+        - id: "purple_stained_glass_pane" #filler
+          displayname: "&#853DFFpowered by MrDarkiMC"
+          slotID: 29
+        - id: "purple_stained_glass_pane" #filler
+          displayname: "&#853DFFpowered by MrDarkiMC"
+          slotID: 30
+        - id: "purple_stained_glass_pane" #filler
+          displayname: "&#853DFFpowered by MrDarkiMC"
+          slotID: 31
+        - id: "purple_stained_glass_pane" #filler
+          displayname: "&#853DFFpowered by MrDarkiMC"
+          slotID: 32
+        - id: "purple_stained_glass_pane" #filler
+          displayname: "&#853DFFpowered by MrDarkiMC"
+          slotID: 33
+        - id: "purple_stained_glass_pane" #filler
+          displayname: "&#853DFFpowered by MrDarkiMC"
+          slotID: 34
+        - id: "purple_stained_glass_pane" #filler
+          displayname: "&#853DFFpowered by MrDarkiMC"
+          slotID: 35
+

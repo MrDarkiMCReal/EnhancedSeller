@@ -14,10 +14,10 @@ public class ShopView implements InventoryHolder {
     public Map<Integer, IMenuButton> contents;
 
 
-    public ShopView(Buyer buyer, Map<Integer, IMenuButton> contents) {
+    public ShopView(Buyer buyer, Map<Integer, IMenuButton> contents, int size) {
         this.buyer = buyer;
         this.contents = contents;
-        this.inventory = EnhancedBuyer.getInstance().getServer().createInventory(this,54,buyer.getDisplayName());
+        this.inventory = EnhancedBuyer.getInstance().getServer().createInventory(this,size,buyer.getDisplayName());
         fill();
     }
     public void fill(){

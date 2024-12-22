@@ -32,9 +32,10 @@ public final class EnhancedBuyer extends JavaPlugin {
         setUpEconomy();
         getServer().getPluginCommand("seller").setExecutor(new Command());
         getServer().getPluginManager().registerEvents(new MenuListener(),this);
+        cycleManager = new CycleManager();
         manager = ObjectManager.initialize();
         new Debugger();
-        cycleManager = new CycleManager();
+
         // Plugin startup logic
 
     }

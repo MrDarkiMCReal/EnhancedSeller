@@ -96,10 +96,11 @@ public static Buyer deserializeBuyer(String ID) {
     ConfigurationSection section = config.getConfigurationSection("menus.categories");
     ConfigurationSection buyerSection = section.getConfigurationSection(ID);
     String displayName = buyerSection.getString("displayName", "Unnamed");
+    int size = buyerSection.getInt("size",54);
 
     Map<Integer, IMenuButton> contents = deserializeButtons(buyerSection.getMapList("contents"));
     Map<Integer, IMenuButton> extraContents = deserializeButtons(buyerSection.getMapList("citizensOverride"));
-    return new Buyer(ID,displayName, contents,extraContents);
+    return new Buyer(ID,size,displayName, contents,extraContents);
 }
 
 

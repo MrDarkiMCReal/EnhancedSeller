@@ -14,7 +14,8 @@ public class Command implements CommandExecutor {
             commandSender.sendMessage(Utils.translateHex("   "));
             commandSender.sendMessage(Utils.translateHex("                   &#D40092MrDarkiMC's EnhancedBuyer"));
             commandSender.sendMessage(Utils.translateHex("   "));
-            commandSender.sendMessage(Utils.translateHex("    &#D40092/" + command.getName() + " open <скупщик> <игрок>&r&7 - открыть меню"));
+            commandSender.sendMessage(Utils.translateHex("    &#D40092/" + command.getName() + " open <скупщик> <игрок>&r&7 - открыть меню без оверрайдов"));
+            commandSender.sendMessage(Utils.translateHex("    &#D40092/" + command.getName() + " openCitizens <скупщик> <игрок>&r&7 - открыть меню с оверрайдами"));
             commandSender.sendMessage(Utils.translateHex("    &#D40092/" + command.getName() + " list&r&7 - список скупщиков"));
             commandSender.sendMessage(Utils.translateHex("    &#D40092/" + command.getName() + " updateInfo <скупщик>&r&7 - Обновить плейсхолдеры"));
             commandSender.sendMessage(Utils.translateHex("    &#D40092/" + command.getName() + " updatePrice <скупщик>&r&7 - обновить цены и ПХ"));
@@ -28,7 +29,20 @@ public class Command implements CommandExecutor {
                     if (strings.length < 2)
                         return true;
                     Player player = Bukkit.getPlayer(strings[2]);
-                    BuyerManager.getBuyerByName(strings[1]).openByPlugin(player);
+                    if (player!=null) {
+                        BuyerManager.getBuyerByName(strings[1]).openByPlugin(player);
+                        return true;
+                    }
+                commandSender.sendMessage("[EnhancedSeller] Игрок не найден");
+                case "openCitizens":
+                    if (strings.length < 2)
+                        return true;
+                    Player player2 = Bukkit.getPlayer(strings[2]);
+                    if (player2!=null) {
+                        BuyerManager.getBuyerByName(strings[1]).openByCitizens(player2);
+                        return true;
+                    }
+                    commandSender.sendMessage("[EnhancedSeller] Игрок не найден");
                     return true;
                 case "updateInfo":
                     BuyerManager.getBuyerByName(strings[1]).updateItemInfo();
