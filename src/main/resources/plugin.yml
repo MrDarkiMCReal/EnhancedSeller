@@ -8,5 +8,8 @@ softdepend:
   - Vault
   - PlayerPoints
 commands:
-  seller:
+  sellermenus:
+    aliases:
+      - sm
+      - sellerm
     description: main command

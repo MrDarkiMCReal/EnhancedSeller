@@ -14,7 +14,7 @@ import org.mrdarkimc.enhancedbuyer.objectmanager.ObjectManager;
 
 public final class EnhancedBuyer extends JavaPlugin {
     public static Configs config;
-    public static EnhancedBuyer instance;
+    private static EnhancedBuyer instance;
     public static Currency currency;
     public static ObjectManager manager;
     public static CycleManager cycleManager;
@@ -30,7 +30,7 @@ public final class EnhancedBuyer extends JavaPlugin {
         config = Configs.Defaults.setupConfig();
         Utils.startUp("EnhancedSeller Premium");
         setUpEconomy();
-        getServer().getPluginCommand("seller").setExecutor(new Command());
+        getServer().getPluginCommand("sellermenus").setExecutor(new Command());
         getServer().getPluginManager().registerEvents(new MenuListener(),this);
         cycleManager = new CycleManager();
         manager = ObjectManager.initialize();

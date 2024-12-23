@@ -113,6 +113,7 @@ private void updateStack(){
             return text.replaceAll("\\{current}",String.valueOf(price.getCurrentPrice()))
                 .replaceAll("\\{min}",String.valueOf(price.getMinPrice()))
                 .replaceAll("\\{max}",String.valueOf(price.getMaxPrice()))
+                .replaceAll("\\{currentStacked}",String.valueOf(price.getCurrentPrice()*displayItem.getMaxStackSize()))
                 .replaceAll("\\{sales}",String.valueOf(price.getSalesCount()))
                 .replaceAll("\\{decrease}",String.valueOf(price.getDecreaseGradation()))
                 .replaceAll("\\{increase}",String.valueOf(price.getIncreaseGradation()))
@@ -138,44 +139,6 @@ private void updateStack(){
         action(player);
         //EnhancedBuyer.manager.priceManager.addSale(this);
     }
-//
-//
-//
-//
-//
-//    if (inv.contains(displayItem)){
-//        List<ItemStack> stackList = Arrays.stream(inv.getContents()).filter(stack -> stack.isSimilar(displayItem)).collect(Collectors.toList());
-//        int totalAmount = stackList.stream().mapToInt(ItemStack::getAmount).sum();
-//        if (totalAmount >= sellAmount){
-//
-//            for (ItemStack stack : inv.getContents()) { //stackList for
-//                if (sellAmount == 0){
-//                    break;
-//                }
-//                if (stack.isSimilar(displayItem)){
-//                int removedAmount = Math.min(stack.getMaxStackSize(),sellAmount);
-//
-//                stack.setAmount(removedAmount);
-//                sellAmount -= removedAmount;
-//                }
-//            }
-//            EnhancedBuyer.currency.addMoney(player,sellAmount*this.price.getCurrentPrice());
-//            EnhancedBuyer.manager.priceManager.addSale(this);
-//
-////            int requiredStacks = (int) Math.ceil((float) 64 /itemStack.getMaxStackSize());
-////            for (int i = 0; i < requiredStacks; i++) {
-////                ItemStack stack = stackList.getFirst();
-////                int itemsToRemove = Math.min(stack.getMaxStackSize(),sellAmount);
-////                stackList.stream().findAny().ifPresent(stack -> {
-////                    stack.setAmount(stack.getAmount()-);
-////
-////                });
-////            }
-////            (itemStack.getMaxStackSize().f)
-////            stackList.stream().find
-//    }else {
-//        player.sendMessage("У вас нет такого предмета");
-//    }
 
 
 

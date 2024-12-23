@@ -11,12 +11,11 @@ import org.mrdarkimc.enhancedbuyer.objectmanager.ObjectManager;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Buyer implements InventoryHolder, Reloadable {
+public class Buyer implements Reloadable {
     private String displayName;
 
     private String configID;
     private Map<Integer, IMenuButton> contents;
-    private Inventory inventory;
     private Map<Integer, IMenuButton> extraContents;
     private int shopSize;
 
@@ -33,12 +32,6 @@ public class Buyer implements InventoryHolder, Reloadable {
     }
     public String getConfigID() {
         return configID;
-    }
-    public void fillInventory(){
-        contents.forEach((k,v) -> inventory.setItem(k,v.getStack()));
-    }
-    public void fillDefaults(){
-
     }
     public void openByPlugin(Player player){
         Map<Integer, IMenuButton> combinedContents = new HashMap<>(contents);
@@ -57,25 +50,11 @@ public class Buyer implements InventoryHolder, Reloadable {
         new ShopView(this,contents,shopSize).open(player);
     }
 
-    public void deserealize(){
-        ObjectManager.deserializeBuyer(configID); //todo wtf is this. текущий обьект будет удален GC
-    }
 
     public String getDisplayName() {
         return displayName;
     }
 
-public IMenuButton getBySlot(int slot){
-        return contents.get(slot);
-}
-    private Map<Integer, IMenuButton> getContents() {
-        return contents;
-    }
-
-    @Override
-    public Inventory getInventory() {
-        return this.inventory;
-    }
 
     @Override
     public void reload() {

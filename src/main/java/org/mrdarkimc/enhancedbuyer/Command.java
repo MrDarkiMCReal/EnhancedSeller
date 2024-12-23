@@ -14,11 +14,11 @@ public class Command implements CommandExecutor {
             commandSender.sendMessage(Utils.translateHex("   "));
             commandSender.sendMessage(Utils.translateHex("                   &#D40092MrDarkiMC's EnhancedBuyer"));
             commandSender.sendMessage(Utils.translateHex("   "));
-            commandSender.sendMessage(Utils.translateHex("    &#D40092/" + command.getName() + " open <скупщик> <игрок>&r&7 - открыть меню без оверрайдов"));
-            commandSender.sendMessage(Utils.translateHex("    &#D40092/" + command.getName() + " openCitizens <скупщик> <игрок>&r&7 - открыть меню с оверрайдами"));
-            commandSender.sendMessage(Utils.translateHex("    &#D40092/" + command.getName() + " list&r&7 - список скупщиков"));
-            commandSender.sendMessage(Utils.translateHex("    &#D40092/" + command.getName() + " updateInfo <скупщик>&r&7 - Обновить плейсхолдеры"));
-            commandSender.sendMessage(Utils.translateHex("    &#D40092/" + command.getName() + " updatePrice <скупщик>&r&7 - обновить цены и ПХ"));
+            commandSender.sendMessage(Utils.translateHex("    &#D40092/sm open <скупщик> <игрок>&r&7 - открыть меню без оверрайдов"));
+            commandSender.sendMessage(Utils.translateHex("    &#D40092/sm openCitizens <скупщик> <игрок>&r&7 - открыть меню с оверрайдами"));
+            commandSender.sendMessage(Utils.translateHex("    &#D40092/sm list&r&7 - список скупщиков"));
+            commandSender.sendMessage(Utils.translateHex("    &#D40092/sm updateInfo <скупщик>&r&7 - Обновить плейсхолдеры"));
+            commandSender.sendMessage(Utils.translateHex("    &#D40092/sm updatePrice <скупщик>&r&7 - обновить цены и ПХ"));
             commandSender.sendMessage(Utils.translateHex("   "));
             return true;
         }else {
@@ -49,6 +49,10 @@ public class Command implements CommandExecutor {
                     return true;
                 case "updatePrice":
                     BuyerManager.getBuyerByName(strings[1]).updateItemPrice();
+                    return true;
+                case "list":
+                    commandSender.sendMessage(Utils.translateHex("&#D40092Список скупщиков:"));
+                    commandSender.sendMessage(Utils.translateHex("&7" + BuyerManager.getContents()));
                     return true;
             }
         }
