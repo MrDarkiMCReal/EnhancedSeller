@@ -85,6 +85,11 @@ public class DecorativeItem implements IMenuButton {
     }
 
     @Override
+    public void updateInfo(Player player) {
+
+    }
+
+    @Override
     public void updatePrice() {
 
     }

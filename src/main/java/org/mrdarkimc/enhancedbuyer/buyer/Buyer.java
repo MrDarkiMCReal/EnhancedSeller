@@ -36,17 +36,23 @@ public class Buyer implements Reloadable {
     public void openByPlugin(Player player){
         Map<Integer, IMenuButton> combinedContents = new HashMap<>(contents);
         combinedContents.putAll(extraContents);
+        updateItemInfo(player);
         new ShopView(this,combinedContents,shopSize).open(player);
     }
     public void updateItemInfo(){
         contents.forEach((k,v) -> v.updateInfo());
         extraContents.forEach((k,v) -> v.updateInfo());
     }
+    public void updateItemInfo(Player player){
+        contents.forEach((k,v) -> v.updateInfo(player));
+        extraContents.forEach((k,v) -> v.updateInfo(player));
+    }
     public void updateItemPrice(){
         contents.forEach((k,v) -> v.updatePrice());
         extraContents.forEach((k,v) -> v.updatePrice());
     }
     public void openByCitizens(Player player){
+        updateItemInfo(player);
         new ShopView(this,contents,shopSize).open(player);
     }
 

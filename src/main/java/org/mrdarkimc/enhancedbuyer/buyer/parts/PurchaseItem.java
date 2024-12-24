@@ -105,6 +105,18 @@ private void updateStack(){
 
     displayItem.setItemMeta(meta);
 }
+    private void updateStack(Player player){
+        ItemMeta meta = displayItem.getItemMeta();
+        meta.setDisplayName(Utils.translateHex(handlePlaceholders(displayName)));
+
+        List<String> newLore = new ArrayList<>(lore);
+        newLore.replaceAll(Utils::translateHex);
+        newLore.replaceAll(l -> handlePlaceholders(l,player));
+
+        meta.setLore(newLore);
+
+        displayItem.setItemMeta(meta);
+    }
     @Override
     public ItemStack getStack() {
         return displayItem;
@@ -120,6 +132,21 @@ private void updateStack(){
                 .replaceAll("\\{decreaseIfSalesUpwards}",String.valueOf(price.getDecreaseIfSalesUpwards()))
                 .replaceAll("\\{increaseIfSalesUnder}",String.valueOf(price.getIncreaseIfSalesUnder()));
     }
+    public String handlePlaceholders(String text, Player player){
+        return text.replaceAll("\\{current}",String.valueOf(price.getCurrentPrice()))
+                .replaceAll("\\{min}",String.valueOf(price.getMinPrice()))
+                .replaceAll("\\{max}",String.valueOf(price.getMaxPrice()))
+                .replaceAll("\\{currentStacked}",String.valueOf(price.getCurrentPrice()*displayItem.getMaxStackSize()))
+                .replaceAll("\\{sales}",String.valueOf(price.getSalesCount()))
+                .replaceAll("\\{summ}",String.valueOf( (Arrays.stream(player.getInventory().getContents())
+                        .filter(Objects::nonNull)
+                        .filter(stack -> stack.getType().equals(stackToSell.getType()))
+                        .mapToInt(ItemStack::getAmount).sum()) * price.getCurrentPrice()))
+                .replaceAll("\\{decrease}",String.valueOf(price.getDecreaseGradation()))
+                .replaceAll("\\{increase}",String.valueOf(price.getIncreaseGradation()))
+                .replaceAll("\\{decreaseIfSalesUpwards}",String.valueOf(price.getDecreaseIfSalesUpwards()))
+                .replaceAll("\\{increaseIfSalesUnder}",String.valueOf(price.getIncreaseIfSalesUnder()));
+    }
 
     @Override
     public void pressLeft(Player player) {
@@ -130,7 +157,7 @@ private void updateStack(){
             new KeyedMessage(player,"messages.bought-failure-all",Map.of("{amount}",String.valueOf(sellAmount))).send();
             return;
         }
-        ItemStack stack = stackList.getFirst();
+        ItemStack stack = stackList.get(0); //todo почему-то getFirst не ворк где-то
         stack.setAmount(stack.getAmount() - sellAmount);
         int totalmoney = sellAmount * this.price.getCurrentPrice();
         EnhancedBuyer.currency.addMoney(player, totalmoney);
@@ -219,6 +246,11 @@ private void updateStack(){
     @Override
     public void updateInfo() {
         updateStack();
+    }
+
+    @Override
+    public void updateInfo(Player player) {
+        updateStack(player);
     }
 
     @Override

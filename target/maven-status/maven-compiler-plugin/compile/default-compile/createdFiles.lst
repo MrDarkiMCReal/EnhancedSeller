@@ -1,6 +1,5 @@
 org\mrdarkimc\enhancedbuyer\buyer\ShopView.class
 org\mrdarkimc\enhancedbuyer\buyer\parts\ItemInfo.class
-org\mrdarkimc\enhancedbuyer\objectmanager\interfaces\IManager.class
 org\mrdarkimc\enhancedbuyer\buyer\parts\DecorativeItem.class
 org\mrdarkimc\enhancedbuyer\buyer\CycleManager.class
 org\mrdarkimc\enhancedbuyer\buyer\parts\interfaces\IMenuButton.class
@@ -10,7 +9,6 @@ org\mrdarkimc\enhancedbuyer\buyer\parts\interfaces\IClick.class
 org\mrdarkimc\enhancedbuyer\EnhancedBuyer.class
 org\mrdarkimc\enhancedbuyer\buyer\parts\interfaces\IPrice.class
 org\mrdarkimc\enhancedbuyer\Command.class
-org\mrdarkimc\enhancedbuyer\autosell\Autosell.class
 org\mrdarkimc\enhancedbuyer\eventhandlers\MenuListener.class
 org\mrdarkimc\enhancedbuyer\objectmanager\ObjectManager.class
 org\mrdarkimc\enhancedbuyer\buyer\parts\PurchaseItem.class

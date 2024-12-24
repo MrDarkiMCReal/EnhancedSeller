@@ -10,5 +10,6 @@ public interface IMenuButton {
     public void pressRight(Player player);
     public void pressShiftRight(Player player);
     void updateInfo();
+    void updateInfo(Player player);
     void updatePrice();
 }
